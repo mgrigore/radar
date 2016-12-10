@@ -37,6 +37,7 @@
 
     "columns": [
       { "Judet"                 : "text"     }, 
+      { "UAT"                   : "text"     }, 
       { "Localitate"            : "text"     }, 
       { "Siruta"                : "integer"  }, 
       { "Nr sectie de votare"   : "smallint" }, 
