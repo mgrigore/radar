@@ -38,14 +38,6 @@ AS $$
       ';
     END LOOP;
     
-    INSERT INTO
-      "projection"
-    SELECT
-      43 AS "circumscriptie",
-      p."sectie",
-      p."voturi"
-    FROM
-      "projection" p
     WHERE
       p."circumscriptie" = 42;
 
