@@ -46,7 +46,7 @@ AS $$
           "circumscriptie",
           "sectie",
           MAX("voturi") AS "voturi",
-          MIN("voturi") AS "delta"
+          MAX("voturi") - MIN("voturi") AS "delta"
         FROM
           "projection" p
         GROUP BY
