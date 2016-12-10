@@ -46,7 +46,6 @@
       { "Votanti lista"         : "integer"  }, 
       { "LP"                    : "integer"  }, 
       { "LS"                    : "integer"  }, 
-      { "LC"                    : "integer"  }, 
       { "UM"                    : "integer"  }, 
       { "LT"                    : "integer"  }, 
       { "Barbati 18-24"         : "smallint" }, 
