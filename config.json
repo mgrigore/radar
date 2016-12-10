@@ -8,6 +8,12 @@
     "idleTimeoutMillis": 30000 
   },
 
+  "duty": {
+    "minutes"  : 15,
+    "idle"     : 10,
+    "overload" : 50
+  },
+
   "export": {
     "account" : "govithubap2016",
 

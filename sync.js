@@ -59,7 +59,12 @@ Promise.all([
 }).then(function (latest) {
   console.log(new Date().toISOString(), 'GENERATING MAP');
 
-  return db.run('generateMap', { latest: latest, minutes: 30, idle: 15, overload: 90 }).then(function (records) {
+  return db.run('generateMap', {
+      latest   : latest,
+      minutes  : config['duty'].minutes,
+      idle     : config['duty'].idle,
+      overload : config['duty'].overload
+    }).then(function (records) {
       console.log(new Date().toISOString(), 'UPLOADING');
 
       return carto.upload(records);
