@@ -1,0 +1,16 @@
+{
+  "name"    : "sync",
+  "version" : "0.0.1",
+
+  "description" : "sync",
+
+  "main": "sync.js",
+
+  "dependencies": {
+    "bluebird"        : "*",
+    "pg"              : "*",
+    "pg-copy-streams" : "*",
+    "request"         : "*",
+    "underscore"      : "*"
+  }
+}
