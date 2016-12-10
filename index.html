@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>GovITHub | Alegeri parlamentare 11 Decembrie 2016</title>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <link rel="shortcut icon" href="http://cartodb.com/assets/favicon.ico" />
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <style>
+        html,
+        body,
+        #map {
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        
+        body > div.cartodb-header {
+            display: none;
+            position: absolute;
+            top: 0px;
+            width: 100%;
+            background-color: rgba(0, 0, 0, .5);
+            font-family: 'Helvetica Neue', Helvetica, sans-serif;
+            line-height: normal;
+            z-index: 99999;
+        }
+		
+        .leaflet-top {
+            top: 70px !important;
+        }     
+		
+		/* Styling the title bar */
+		.project-title {
+            font-family: 'Roboto', sans-serif !important;
+			padding: 5px;
+			color: #fff;
+		}
+		.project-title .border-left {
+			border-left: 2px solid #ccc;
+			padding-left: 20px;
+		}
+		.project-title .block {
+			float: left;
+			padding-right: 10px !important;
+		}
+		
+		.project-title h1,
+		.project-title h2,
+		.project-title h3,
+		.project-title small {
+			margin: 0 !important;
+			padding: 0 !important;
+		}
+		
+		.project-title h1,
+		.project-title h2,
+		.project-title h3 {
+			font-size:18px !important; 
+		}
+		
+		.project-title h1,
+		.project-title h2{
+			line-height: 50px !important;
+		}
+		
+		.project-title h1 {
+			font-size: 26px !important;
+			font-weight: bold !important;
+		}
+		.project-title h2 {
+			padding-top: 2px !important;
+		}
+		
+		.project-title img {
+			max-height: 40px !important;
+			margin: 0px 10px 0px 10px !important;
+			padding: 5px !important;
+			vertical-align: bottom;
+		}
+		.project-title img.govithub {
+			padding-bottom: 15px !important;
+			margin: 0px !important;
+		}
+		
+		@media only screen and (max-width:1024px){
+			.project-title .big-device {
+				display: none;
+			}
+		}
+        
+		/* Selector menu */
+        #selector_menu {
+            position: absolute;
+            top: 80px;
+            right: 20px;
+            z-index: 9000;
+            color: #858585;
+			font-size: 12px;
+			padding: 10px;
+			
+			
+			webkit-box-shadow: rgba(0, 0, 0, .2) 0 0 4px 2px;
+			-moz-box-shadow: rgba(0, 0, 0, .2) 0 0 4px 2px;
+			box-shadow: rgba(0, 0, 0, .2) 0 0 4px 2px;
+			
+			-webkit-border-radius: 4px;
+			-moz-border-radius: 4px;
+			-ms-border-radius: 4px;
+			-o-border-radius: 4px;
+			border-radius: 4px;
+			
+			border: 1px solid #999;
+			background: #fff;
+			z-index: 105;
+        }
+		#selector_menu select {
+			border: none;
+        	outline: 0;
+		}
+		#selector_menu select,
+		#selector_menu option {
+            font-family: 'Helvetica Neue', Helvetica, sans-serif;
+			color:#858585;
+			font-size: 12px;
+			text-transform: uppercase;
+		}
+		
+    </style>
+    <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/3.15/themes/css/cartodb.css" /> </head>
+
+<body>
+    <div id="map"></div>
+    <!-- include cartodb.js library -->
+    <script src="http://libs.cartocdn.com/cartodb.js/v3/3.15/cartodb.js"></script>
+    <div id='selector_menu'>
+        <select id='selector'>
+            <option value='0'>Prezenta judete</option>
+            <option value='1'>Prezenta UAT</option>
+            <option value='2'>Prezenta sectii tara</option>
+            <option value='3'>Prezenta tari diaspora</option>
+            <option value='4'>Prezenta sectii diaspora</option>
+            <option value='5'>Grad de ocupare disapora</option>
+        </select>
+    </div>
+    <script>
+        $(document).ready(function () {
+            var sublayersL = [];
+            mapUrl = 'https://govithubap2016.carto.com/api/v2/viz/9564b630-bbc6-11e6-a88b-0e05a8b3e3d7/viz.json'
+            map = new L.Map('map', {
+                zoomControl: true
+                , zoom: 3
+                , maxZoom: 18
+                , minZoom: 3
+                , center: [45.94195, 25.0201] 
+            });
+            L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+       
+            // STORE SUBLAYERS
+            cartodb.createLayer(map, mapUrl, {
+                //options
+                refreshTime: 300000
+            }).addTo(map).done(function (layer) {
+                // SEPARATE THE SUBLAYERS
+                for (i = 0; i < layer.getSubLayerCount(); i++) {
+                    sublayersL[i] = layer.getSubLayer(i);
+                    layer.getSubLayer(i).hide();
+                };
+                //map.setMaxBounds([
+                //          [48.5653, 19.9618], // lat long top left
+                //          [43.3186, 30.0784] // lat long bottom right
+                //        ]);
+                
+                map.options.minZoom = 6;
+                map.setView([45.94195, 25.0201], 7);
+                
+                //do stuff
+                sublayersL[0].show()
+				var i = new cdb.geo.ui.Header({
+                    model: new cdb.core.Model({
+                        extra: {
+                            title: "Title"
+                            , show_title: true
+                            , show_description: false
+                        }
+                    })
+                    , template: cdb.core.Template.compile(' \
+					<div class="project-title">\
+						<h1 class="block"><img src="guvern.png">R.A.D.A.R.</h1>\
+						<h2 class="block big-device">creat de <img alt="GovITHub" class="govithub" src="govithub.png"></h2>\
+						<div class="block big-device border-left">\
+							<h3>Hartă Prezență Vot - Alegeri Parlamentare 2016</h3>\
+							<small>Date oficiale furnizate de BEC si actualizate la 5 minute.</small>\
+						</div>\
+					</div>', 'mustache')
+                });
+                $('body').append(i.render().el);
+            });
+            var lastVisible = 0;
+            $('#selector').change(function () {
+                for (i = 0; i < 6; i++) {
+                    sublayersL[i].hide();
+                }
+
+                if ($(this).val() == '0' || $(this).val() == '1' || $(this).val() == '2') {
+                    if (lastVisible == '3' || lastVisible == '4' || lastVisible == '5') {
+                        //map.setMaxBounds([
+                        //      [48.5653, 19.9618], // lat long top left
+                        //      [43.3186, 30.0784] // lat long bottom right
+                        //    ]);
+                        map.options.minZoom = 6;
+                        map.setView([45.94195, 25.0201], 7);
+                        
+                    }
+                }
+                if ($(this).val() == '3' || $(this).val() == '4' || $(this).val() == '5') {
+                    if (lastVisible == '0' || lastVisible == '1' || lastVisible == '2') {
+                        //map.setMaxBounds([
+                        //      [90, -180], // lat long top left
+                        //      [-90, 180] // lat long bottom right
+                        //    ]);
+                       
+                        map.options.minZoom = 3;
+                        map.setView([20.5, 15.0], 3);
+                    }
+                }
+                lastVisible = $(this).val();
+                sublayersL[$(this).val()].show();
+            });
+        });
+    </script>
+</body>
+
+</html>
