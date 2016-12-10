@@ -38,9 +38,6 @@ AS $$
       ';
     END LOOP;
     
-    WHERE
-      p."circumscriptie" = 42;
-
     RETURN QUERY
       WITH
         overview
