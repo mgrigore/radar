@@ -98,7 +98,7 @@
 			}
 		}
 
-        .project-title .fb-share-button {
+        #fb-share {
             float: right;
             top: 8px;
             right: 12px;
@@ -221,8 +221,10 @@
 							<small>Date oficiale furnizate de BEC si actualizate la 5 minute.</small>\
 						</div>\
 					</div>\
-                    <div class="fb-share-button" data-href="http://radar.ithub.gov.ro/" data-layout="button_count" data-mobile-iframe="true">\
-                        <a class="fb-xfbml-parse-ignore" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Fradar.ithub.gov.ro%2F">Share</a>\
+                    <div id="fb-share">\
+                        <div class="fb-share-button" data-href="http://radar.ithub.gov.ro/" data-layout="button_count" data-mobile-iframe="true">\
+                            <a class="fb-xfbml-parse-ignore" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Fradar.ithub.gov.ro%2F">Share</a>\
+                        </div>\
                     </div>', 'mustache')
                 });
                 $('body').append(i.render().el);
