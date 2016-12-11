@@ -1,0 +1,239 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:og="http://ogp.me/ns#" xmlns:fb="https://www.facebook.com/2008/fbml"> 
+
+<head>
+    <title>GovITHub | Alegeri parlamentare 11 Decembrie 2016</title>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+
+    <meta property="og:url" content="http://radar.ithub.gov.ro/" />
+    <meta property="og:title" content="[GovITHub] De alegeri, urmărește LIVE pe internet prezența la vot din România și diaspora!" />
+    <meta property="og:description" content="Vezi harta interactiva cu prezența românilor la vot pe județe și țări, actualizată la fiecare 5 minute!" />
+    <meta property="og:image" content="http://radar.ithub.gov.ro/preview.jpg" />
+    <meta property="og:type" content="article" />
+
+    <link rel="shortcut icon" href="http://radar.ithub.gov.ro/favicon.png" />
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <style>
+        html,
+        body,
+        #map {
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        
+        body > div.cartodb-header {
+            display: none;
+            position: absolute;
+            top: 0px;
+            width: 100%;
+            background-color: rgba(0, 0, 0, .5);
+            font-family: 'Helvetica Neue', Helvetica, sans-serif;
+            line-height: normal;
+            z-index: 99999;
+        }
+		
+        .leaflet-top {
+            top: 20px !important;
+        }     
+		
+		/* Styling the title bar */
+		.project-title {
+            font-family: 'Roboto', sans-serif !important;
+			padding: 5px;
+			color: #fff;
+		}
+		.project-title .border-left {
+			border-left: 2px solid #ccc;
+			padding-left: 20px;
+		}
+		.project-title .block {
+			float: left;
+			padding-right: 10px !important;
+		}
+		
+		.project-title h1,
+		.project-title h2,
+		.project-title h3,
+		.project-title small {
+			margin: 0 !important;
+			padding: 0 !important;
+		}
+		
+		.project-title h1,
+		.project-title h2,
+		.project-title h3 {
+			font-size:18px !important; 
+		}
+		
+		.project-title h1,
+		.project-title h2{
+			line-height: 50px !important;
+		}
+		
+		.project-title h1 {
+			font-size: 26px !important;
+			font-weight: bold !important;
+		}
+		.project-title h2 {
+			padding-top: 2px !important;
+            font-weight: normal;
+		}
+		
+		.project-title img {
+			max-height: 40px !important;
+			margin: 0px 10px 0px 10px !important;
+			padding: 5px !important;
+			vertical-align: bottom;
+		}
+		.project-title img.govithub {
+			padding-bottom: 15px !important;
+			margin: 0px !important;
+		}
+		
+		@media only screen and (max-width:1024px){
+			.project-title .big-device {
+				display: none;
+			}
+		}
+        
+		/* Selector menu */
+        #selector_menu {
+            position: absolute;
+            top: 30px;
+            right: 20px;
+            z-index: 9000;
+            color: #858585;
+			font-size: 12px;
+			padding: 10px;
+			
+			
+			webkit-box-shadow: rgba(0, 0, 0, .2) 0 0 4px 2px;
+			-moz-box-shadow: rgba(0, 0, 0, .2) 0 0 4px 2px;
+			box-shadow: rgba(0, 0, 0, .2) 0 0 4px 2px;
+			
+			-webkit-border-radius: 4px;
+			-moz-border-radius: 4px;
+			-ms-border-radius: 4px;
+			-o-border-radius: 4px;
+			border-radius: 4px;
+			
+			border: 1px solid #999;
+			background: #fff;
+			z-index: 105;
+        }
+		#selector_menu select {
+			border: none;
+        	outline: 0;
+		}
+		#selector_menu select,
+		#selector_menu option {
+            font-family: 'Helvetica Neue', Helvetica, sans-serif;
+			color:#858585;
+			font-size: 12px;
+			text-transform: uppercase;
+		}
+		
+    </style>
+    <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/3.15/themes/css/cartodb.css" /> </head>
+
+<body>
+    <div id="map"></div>
+    <!-- include cartodb.js library -->
+    <script src="http://libs.cartocdn.com/cartodb.js/v3/3.15/cartodb.js"></script>
+    <div id='selector_menu'>
+        <select id='selector'>
+            <option value='0'>Prezență județe</option>
+            <option value='1'>Prezență UAT</option>
+            <option value='2'>Prezență secții țară</option>
+            <option value='3'>Prezență țări diasporă</option>
+            <option value='4'>Prezență sectii diasporă</option>
+            <option value='5'>Grad de ocupare diasporă</option>
+        </select>
+    </div>
+    <script>
+        $(document).ready(function () {
+            var sublayersL = [];
+            mapUrl = 'https://govithubap2016.carto.com/api/v2/viz/9564b630-bbc6-11e6-a88b-0e05a8b3e3d7/viz.json'
+            map = new L.Map('map', {
+                zoomControl: true
+                , zoom: 3
+                , maxZoom: 18
+                , minZoom: 3
+                , center: [45.94195, 25.0201] 
+            });
+            L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
+                attribution: [
+                    '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+                    '&#124; <a href="http://radar.ithub.gov.ro">R.A.D.A.R.</a>',
+                    '&#124; <a href="http://ithub.gov.ro/">GovITHub</a>'
+                ].join(' ')
+            }).addTo(map);
+       
+            // STORE SUBLAYERS
+            cartodb.createLayer(map, mapUrl, {
+                //options
+                refreshTime: 300000
+            }).addTo(map).done(function (layer) {
+                // SEPARATE THE SUBLAYERS
+                for (i = 0; i < layer.getSubLayerCount(); i++) {
+                    sublayersL[i] = layer.getSubLayer(i);
+                    layer.getSubLayer(i).hide();
+                };
+                //map.setMaxBounds([
+                //          [48.5653, 19.9618], // lat long top left
+                //          [43.3186, 30.0784] // lat long bottom right
+                //        ]);
+                
+                map.options.minZoom = 6;
+                map.setView([45.94195, 25.0201], 7);
+                
+                //do stuff
+                sublayersL[0].show();
+            });
+            var lastVisible = 0;
+            $('#selector').change(function () {
+                for (i = 0; i < 6; i++) {
+                    sublayersL[i].hide();
+                }
+
+                if ($(this).val() == '0' || $(this).val() == '1' || $(this).val() == '2') {
+                    if (lastVisible == '3' || lastVisible == '4' || lastVisible == '5') {
+                        //map.setMaxBounds([
+                        //      [48.5653, 19.9618], // lat long top left
+                        //      [43.3186, 30.0784] // lat long bottom right
+                        //    ]);
+                        map.options.minZoom = 6;
+                        map.setView([45.94195, 25.0201], 7);
+                        
+                    }
+                }
+                if ($(this).val() == '3' || $(this).val() == '4' || $(this).val() == '5') {
+                    if (lastVisible == '0' || lastVisible == '1' || lastVisible == '2') {
+                        //map.setMaxBounds([
+                        //      [90, -180], // lat long top left
+                        //      [-90, 180] // lat long bottom right
+                        //    ]);
+                       
+                        map.options.minZoom = 3;
+                        map.setView([20.5, 15.0], 3);
+                    }
+                }
+                lastVisible = $(this).val();
+                sublayersL[$(this).val()].show();
+            });
+        });
+    </script>
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-88806924-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+</body>
+
+</html>
