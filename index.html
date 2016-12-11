@@ -98,6 +98,10 @@
 			float: right;
 		}
 
+  		.project-title .fb-share {
+			margin-top: 10px;
+		}
+
 		@media only screen and (max-width:1024px){
 			.project-title .big-device {
 				display: none;
@@ -158,16 +162,6 @@
             <option value='5'>Grad de ocupare diasporă</option>
         </select>
     </div>
-    <div id="fb-root"></div>
-    <script>
-        (function(d, s, id) {
-          var js, fjs = d.getElementsByTagName(s)[0];
-          if (d.getElementById(id)) return;
-          js = d.createElement(s); js.id = id;
-          js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.8";
-          fjs.parentNode.insertBefore(js, fjs);
-        }(document, 'script', 'facebook-jssdk'));
-    </script>
     <script>
         $(document).ready(function () {
             var sublayersL = [];
