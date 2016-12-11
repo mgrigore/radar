@@ -97,6 +97,12 @@
 				display: none;
 			}
 		}
+
+        .project-title .fb-share-button {
+            float: right;
+            top: 8px;
+            right: 12px;
+        }
         
 		/* Selector menu */
         #selector_menu {
@@ -152,6 +158,16 @@
             <option value='5'>Grad de ocupare diasporă</option>
         </select>
     </div>
+    <div id="fb-root"></div>
+    <script>
+        (function(d, s, id) {
+          var js, fjs = d.getElementsByTagName(s)[0];
+          if (d.getElementById(id)) return;
+          js = d.createElement(s); js.id = id;
+          js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.8";
+          fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+    </script>
     <script>
         $(document).ready(function () {
             var sublayersL = [];
@@ -204,7 +220,10 @@
 							<h3>Hartă Prezență Vot - Alegeri Parlamentare 2016</h3>\
 							<small>Date oficiale furnizate de BEC si actualizate la 5 minute.</small>\
 						</div>\
-					</div>', 'mustache')
+					</div>\
+                    <div class="fb-share-button" data-href="http://radar.ithub.gov.ro/" data-layout="button_count" data-mobile-iframe="true">\
+                        <a class="fb-xfbml-parse-ignore" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Fradar.ithub.gov.ro%2F">Share</a>\
+                    </div>', 'mustache')
                 });
                 $('body').append(i.render().el);
             });
