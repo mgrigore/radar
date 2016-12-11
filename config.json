@@ -9,9 +9,9 @@
   },
 
   "duty": {
-    "minutes"  : 15,
-    "idle"     : 10,
-    "overload" : 50
+    "minutes"  : 25,
+    "idle"     : 20,
+    "overload" : 60
   },
 
   "export": {

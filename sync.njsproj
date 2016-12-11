@@ -33,6 +33,7 @@
     <Compile Include="lib\carto.js" />
     <Compile Include="lib\postgres.js" />
     <Compile Include="lib\sources.js" />
+    <Compile Include="sql\deleteSource.sql" />
     <Compile Include="sync.js" />
     <Content Include="config.json" />
     <Content Include="package.json" />
