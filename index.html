@@ -51,6 +51,8 @@
 		.project-title .block {
 			float: left;
 			padding-right: 10px !important;
+			width: auto!important;
+ 			display: inline-block;
 		}
 		
 		.project-title h1,
@@ -91,19 +93,17 @@
 			padding-bottom: 15px !important;
 			margin: 0px !important;
 		}
-		
+
+		.project-title .right {
+			float: right;
+		}
+
 		@media only screen and (max-width:1024px){
 			.project-title .big-device {
 				display: none;
 			}
 		}
 
-        #fb-share {
-            float: right;
-            margin-top: 8px;
-            margin-right: 12px;
-        }
-        
 		/* Selector menu */
         #selector_menu {
             position: absolute;
@@ -220,11 +220,17 @@
 							<h3>Hartă Prezență Vot - Alegeri Parlamentare 2016</h3>\
 							<small>Date oficiale furnizate de BEC si actualizate la 5 minute.</small>\
 						</div>\
-					</div>\
-                    <div id="fb-share">\
-                        <div class="fb-share-button" data-href="http://radar.ithub.gov.ro/" data-layout="button_count" data-mobile-iframe="true">\
-                            <a class="fb-xfbml-parse-ignore" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Fradar.ithub.gov.ro%2F">Share</a>\
-                        </div>\
+						<div class="block right fb-share">\
+							<iframe\
+								src="https://www.facebook.com/plugins/share_button.php?href=http%3A%2F%2Fradar.ithub.gov.ro%2F&layout=button_count&size=large&mobile_iframe=true&appId=1584127518505976&width=99&height=28"\
+								width="99"\
+								height="28"\
+								style="border:none;overflow:hidden"\
+								scrolling="no"\
+								frameborder="0"\
+								allowTransparency="true"\
+							></iframe>\
+						</div>\
                     </div>', 'mustache')
                 });
                 $('body').append(i.render().el);
